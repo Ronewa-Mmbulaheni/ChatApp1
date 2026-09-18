@@ -5,7 +5,7 @@
 
 ChatApp is a Java-based application that allows users to register and log in using their username and password. The application validates user information and displays appropriate messages for successful or unsuccessful registration and login attempts.
 
-The project includes user registration, password complexity validation, South African cell phone number validation, and login authentication.
+The project includes user registration, password complexity validation, South African cell phone number validation, and login authentication. 
 
 ## Features
 - User registration.
