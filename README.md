@@ -1,116 +1,77 @@
-
 # ChatApp
 
-## Project Description
-
-ChatApp is a Java-based application that allows users to register and log in using their username and password. The application validates user information and displays appropriate messages for successful or unsuccessful registration and login attempts.
-
-The project includes user registration, password complexity validation, South African cell phone number validation, and login authentication. 
+A Java console application built for a messaging assignment. It has two parts: user registration/login, and a QuickChat messaging menu that validates, sends, stores, or disregards messages. Stored messages are persisted to JSON.
 
 ## Features
-- User registration.
-- Username validation.
-- Password complexity validation.
-- South African cell phone number validation.
-- Login authentication.
-- Successful and unsuccessful login messages.
-- JUnit testing.
+
+**Part 1 — Registration & Login**
+- Username validation: must contain `_` and be ≤ 5 characters (`kyl_1`)
+- Password validation: ≥ 8 chars, at least one capital letter, one digit, one special character
+- South African cell number validation: `+27` followed by 9 digits (`+27838968976`)
+- Registration returns descriptive success/failure messages
+- Login checks saved credentials and returns a personalised welcome or rejection message
+
+**Part 2 — QuickChat**
+- Validates recipient cell numbers (`+` followed by 10–12 digits)
+- Enforces a 250-character message limit
+- Generates a 10-digit message ID
+- Builds a message hash in the format `XX:N:FIRSTLAST` (first two ID digits, message number, first + last word uppercased)
+- Menu options: send, store (saved to `messages.json`), or disregard a message
+- Tracks total messages processed
 
 ## Project Structure
 
-```text
-ChatApp/
-├── Login.java
-├── ChatApp.java
-└── ChatAppTest.java
+```
+src/chatapp/
+  ChatApp.java        # Main class, console UI and menus
+  Login.java          # Registration, validation, login logic
+  Message.java        # Message model, ID/hash generation, validation
+  MessageStorage.java # Gson-based JSON persistence
+test/chatapp/
+  ChatAppTest.java    # JUnit tests for Parts 1 and 2
+messages.json         # Persisted stored messages
 ```
 
-### Login.java
+## Requirements
 
-Contains the methods responsible for validating user details, registering users, saving user information, and checking login details.
+- Java (project targets JDK 26)
+- Apache Ant / NetBeans (project is a NetBeans Ant project)
+- Libraries on the classpath:
+  - JUnit 4 / JUnit 5 (tests)
+  - Hamcrest
+  - Gson 2.10.1 (`com.google.gson`)
+  - org.json (`json-20250517.jar`)
 
-### ChatApp.java
+Classpath entries are configured in `nbproject/project.properties`.
 
-Contains the main application and console interface. It allows users to enter their details, register, and log in.
+## Build & Run
 
-### ChatAppTest.java
+**In NetBeans:** Open the project and press Run (F6), or Build (F11).
 
-Contains JUnit tests used to test the functionality of the Login class.
+**From the command line (after building):**
 
-## Validation Rules
-
-### Username
-
-The username must:
-
-- Contain an underscore (_).
-- Be no more than five characters long.
-
-Example of a valid username:
-
-```text
-kyl_1
+```bash
+cd dist
+java -jar "ChatApp.jar"
 ```
 
-### Password
+**Run the tests:**
 
-The password must:
-
-- Contain at least eight characters.
-- Include a capital letter.
-- Include a number.
-- Include a special character.
-
-Example of a valid password:
-
-```text
-Ch&&sec@ke99!
+```bash
+ant test
 ```
 
-### Cell Phone Number
+## Usage
 
-The cell phone number must use the South African international format:
+1. Register by entering first name, last name, username, password, and cell number.
+2. Log in with the same credentials.
+3. Choose from the QuickChat menu:
+   - `1` — Send messages (enter a count, then each message's recipient and text; choose to send, store, or disregard)
+   - `2` — Show recently sent messages (`Coming Soon`)
+   - `3` — Quit
 
-```text
-+27XXXXXXXXX
-```
+## Notes
 
-Example:
-
-```text
-+27838968976
-```
-
-## How to Run the Application
-
-1. Open the project in a Java IDE such as NetBeans or IntelliJ IDEA.
-2. Ensure that the files are located in the `chatapp` package.
-3. Compile the Java files.
-4. Run `ChatApp.java`.
-5. Enter the required registration details.
-6. Enter the username and password to log in.
-
-## Testing
-
-The project uses JUnit to test the Login class.
-
-The tests cover:
-
-- Valid and invalid usernames.
-- Valid and invalid passwords.
-- Valid and invalid cell phone numbers.
-- Successful registration.
-- Failed registration.
-- Successful login.
-- Failed login.
-- Login status messages.
-
-## Technologies Used
-
-- Java
-- JUnit
-- Java Regular Expressions
-
-## Author
-
-Ronewa Mmbulaheni
+- Stored messages are appended to `messages.json` in the working directory.
+- The `Message` class has an overloaded constructor accepting a forced ID, used for deterministic hash testing.
+- `messages.json` may contain test data; delete it to start fresh.
