@@ -1,0 +1,34 @@
+[
+  {
+    "messageID": "4211502411",
+    "messageNumber": 0,
+    "recipient": "+27718693002",
+    "messageText": "hih",
+    "messageHash": "42:0:HIHHIH",
+    "flag": "Stored"
+  },
+  {
+    "messageID": "6121420492",
+    "messageNumber": 1,
+    "recipient": "+278280363",
+    "messageText": "Hi",
+    "messageHash": "61:1:HIHI",
+    "flag": "Stored"
+  },
+  {
+    "messageID": "3068368704",
+    "messageNumber": 1,
+    "recipient": "+27838884567",
+    "messageText": "Where are you? You are late! I have asked you to be on time.",
+    "messageHash": "30:1:WHERETIME",
+    "flag": "Stored"
+  },
+  {
+    "messageID": "3684300790",
+    "messageNumber": 4,
+    "recipient": "+27838884567",
+    "messageText": "Ok, I am leaving without you",
+    "messageHash": "36:4:OKYOU",
+    "flag": "Stored"
+  }
+]
