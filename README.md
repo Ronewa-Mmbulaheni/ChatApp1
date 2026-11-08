@@ -1,77 +1,53 @@
-# ChatApp
+# ChatApp - Part 3 (Final POE)
 
-A Java console application built for a messaging assignment. It has two parts: user registration/login, and a QuickChat messaging menu that validates, sends, stores, or disregards messages. Stored messages are persisted to JSON.
+## Overview
+This is the final part of the ChatApp POE. Building on Parts 1 and 2, this version introduces a fully functional "Stored Messages" menu that uses **parallel arrays** to manage, search, and delete messages. It also reads and writes data to a JSON file using the Gson library.
 
-## Features
+## Features Implemented (Part 3 Rubric)
 
-**Part 1 — Registration & Login**
-- Username validation: must contain `_` and be ≤ 5 characters (`kyl_1`)
-- Password validation: ≥ 8 chars, at least one capital letter, one digit, one special character
-- South African cell number validation: `+27` followed by 9 digits (`+27838968976`)
-- Registration returns descriptive success/failure messages
-- Login checks saved credentials and returns a personalised welcome or rejection message
+### 1. Parallel Arrays
+The application uses parallel arrays to keep track of all message data without hard-coding:
+- `sentMessages[]` - Stores messages that were sent.
+- `disregardedMessages[]` - Stores messages that were discarded.
+- `storedMessages[]` - Stores messages that were saved and written to JSON.
+- `messageHashes[]` - Stores the generated hash for each message.
+- `messageIDs[]` - Stores the unique 10-digit ID for each message.
+- `messageRecipients[]` - Stores the recipient's cell number.
 
-**Part 2 — QuickChat**
-- Validates recipient cell numbers (`+` followed by 10–12 digits)
-- Enforces a 250-character message limit
-- Generates a 10-digit message ID
-- Builds a message hash in the format `XX:N:FIRSTLAST` (first two ID digits, message number, first + last word uppercased)
-- Menu options: send, store (saved to `messages.json`), or disregard a message
-- Tracks total messages processed
+### 2. Stored Messages Menu (Option 4)
+A fourth main menu option has been added. When selected, users can access the following sub-features:
+- **Display sender and recipient:** Shows the current logged-in user and the recipients of all stored messages.
+- **Display the longest stored message:** Searches the array and prints the message with the most characters.
+- **Search by Message ID:** Finds a specific message and displays its recipient and content.
+- **Search by recipient:** Finds *all* messages sent to a specific cell number.
+- **Delete by Message Hash:** Removes a message from the JSON file and the arrays, printing a success message.
+- **Full Report:** Displays the Hash, Recipient, and Message for every stored message.
 
-## Project Structure
+### 3. JSON File Handling
+- Messages are saved to `messages.json`.
+- The application reads the JSON file into an array using `Gson` and displays it.
+- **Attribution:** The Gson library is used for JSON parsing. Reference provided in `MessageStorage.java`.
 
-```
-src/chatapp/
-  ChatApp.java        # Main class, console UI and menus
-  Login.java          # Registration, validation, login logic
-  Message.java        # Message model, ID/hash generation, validation
-  MessageStorage.java # Gson-based JSON persistence
-test/chatapp/
-  ChatAppTest.java    # JUnit tests for Parts 1 and 2
-messages.json         # Persisted stored messages
-```
+## How to Run
+1. Open the project in NetBeans or your preferred Java IDE.
+2. Ensure the Gson library is added to your project classpath.
+3. Run the `ChatApp.java` file in the `chatapp` package.
+4. Follow the console prompts to register, log in, and access the menu.
 
-## Requirements
+## Unit Testing (JUnit)
+The `ChatAppTest.java` file contains all required unit tests for Parts 1, 2, and 3. 
 
-- Java (project targets JDK 26)
-- Apache Ant / NetBeans (project is a NetBeans Ant project)
-- Libraries on the classpath:
-  - JUnit 4 / JUnit 5 (tests)
-  - Hamcrest
-  - Gson 2.10.1 (`com.google.gson`)
-  - org.json (`json-20250517.jar`)
+### Test Data Used 
+The arrays and tests are populated using the exact test data provided in the rubric:
+- **Message 1 (Sent):** `+27834557896`, "Did you get the cake?"
+- **Message 2 (Stored):** `+27838884567`, "Where are you? You are late! I have asked you to be on time."
+- **Message 3 (Disregard):** `+27834484567`, "Yohoooo, I am at your gate."
+- **Message 4 (Sent):** `0838884567`, "It is dinner time !"
+- **Message 5 (Stored):** `+27838884567`, "Ok, I am leaving without you."
 
-Classpath entries are configured in `nbproject/project.properties`.
-
-## Build & Run
-
-**In NetBeans:** Open the project and press Run (F6), or Build (F11).
-
-**From the command line (after building):**
-
-```bash
-cd dist
-java -jar "ChatApp.jar"
-```
-
-**Run the tests:**
-
-```bash
-ant test
-```
-
-## Usage
-
-1. Register by entering first name, last name, username, password, and cell number.
-2. Log in with the same credentials.
-3. Choose from the QuickChat menu:
-   - `1` — Send messages (enter a count, then each message's recipient and text; choose to send, store, or disregard)
-   - `2` — Show recently sent messages (`Coming Soon`)
-   - `3` — Quit
-
-## Notes
-
-- Stored messages are appended to `messages.json` in the working directory.
-- The `Message` class has an overloaded constructor accepting a forced ID, used for deterministic hash testing.
-- `messages.json` may contain test data; delete it to start fresh.
+### Part 3 Specific Tests
+- `testSentMessagesArrayPopulated()`: Verifies the sent array holds the correct data.
+- `testDisplayLongestMessage()`: Verifies the system finds the longest message correctly.
+- `testSearchForMessageID()`: Verifies search by ID returns the correct message.
+- `testSearchMessagesByRecipient()`: Verifies searching by recipient returns multiple messages.
+- `testDeleteMessageByHash()`: Verifies the delete message outputs the exact success string required.
